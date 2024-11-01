@@ -14,7 +14,7 @@ const Leaderboard = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch('http://localhost:5000/leaderboard');
+      const response = await fetch('https://leaderboard-backend-6fr8.onrender.com/leaderboard'); // Updated URL
       if (!response.ok) throw new Error('Failed to fetch leaderboard');
       const data = await response.json();
       setLeaderboard(data);
@@ -28,10 +28,10 @@ const Leaderboard = () => {
 
   const clearLeaderboard = async () => {
     if (!window.confirm('Are you sure you want to clear the leaderboard?')) return;
-    
+
     try {
-      const response = await fetch('http://localhost:5000/leaderboard', {
-        method: 'DELETE',
+      const response = await fetch('https://leaderboard-backend-6fr8.onrender.com/leaderboard', {
+        method: 'DELETE', // Updated URL
       });
       if (!response.ok) throw new Error('Failed to clear leaderboard');
       setLeaderboard([]);
