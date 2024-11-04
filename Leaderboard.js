@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Trophy, Medal, Award, Trash2, RefreshCw } from 'lucide-react';
 import './leaderboard.css';
 
-const API_URL = 'https://leaderboard-backend-6fr8.onrender.com';
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+console.log('API URL being used:', API_URL);
 
 const Leaderboard = () => {
   const [leaderboard, setLeaderboard] = useState([]);
@@ -18,8 +19,11 @@ const Leaderboard = () => {
     try {
       console.log('Fetching from:', `${API_URL}/leaderboard`);
       const response = await fetch(`${API_URL}/leaderboard`);
+      console.log('Response status:', response.status);
+      
       if (!response.ok) throw new Error('Failed to fetch leaderboard');
       const data = await response.json();
+      console.log('Received data:', data);
       setLeaderboard(data);
     } catch (error) {
       setError('Failed to load leaderboard data');
@@ -33,6 +37,7 @@ const Leaderboard = () => {
     if (!window.confirm('Are you sure you want to clear the leaderboard?')) return;
     
     try {
+      console.log('Clearing leaderboard at:', `${API_URL}/leaderboard`);
       const response = await fetch(`${API_URL}/leaderboard`, {
         method: 'DELETE',
       });
