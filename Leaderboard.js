@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Trophy, Medal, Award, Trash2, RefreshCw } from 'lucide-react';
 import './leaderboard.css';
 
-const API_URL = 'https://leaderboard-backend-qgp3.onrender.com';
+const API_URL = 'https://leaderboard-backend-6fr8.onrender.com';
 
 const Leaderboard = () => {
   const [leaderboard, setLeaderboard] = useState([]);
