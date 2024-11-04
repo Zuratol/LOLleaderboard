@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Trophy, Medal, Award, Trash2, RefreshCw } from 'lucide-react';
 import './leaderboard.css';
-import API_URL from './config';  // Import the API URL
+
+const API_URL = 'https://leaderboard-backend-6fr8.onrender.com';
 
 const Leaderboard = () => {
   const [leaderboard, setLeaderboard] = useState([]);
@@ -15,24 +16,14 @@ const Leaderboard = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${API_URL}/leaderboard`, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        }
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Server responded with ${response.status}: ${errorText}`);
-      }
-
+      console.log('Fetching from:', `${API_URL}/leaderboard`);
+      const response = await fetch(`${API_URL}/leaderboard`);
+      if (!response.ok) throw new Error('Failed to fetch leaderboard');
       const data = await response.json();
-      setLeaderboard(Array.isArray(data) ? data : []);
+      setLeaderboard(data);
     } catch (error) {
-      console.error('Fetch error:', error);
-      setError(`Failed to load leaderboard data: ${error.message}`);
+      setError('Failed to load leaderboard data');
+      console.error('Error:', error);
     } finally {
       setIsLoading(false);
     }
@@ -44,19 +35,12 @@ const Leaderboard = () => {
     try {
       const response = await fetch(`${API_URL}/leaderboard`, {
         method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json'
-        }
       });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Failed to clear leaderboard: ${errorText}`);
-      }
-
+      if (!response.ok) throw new Error('Failed to clear leaderboard');
       setLeaderboard([]);
     } catch (error) {
-      setError(`Failed to clear leaderboard: ${error.message}`);
+      setError('Failed to clear leaderboard');
+      console.error('Error:', error);
     }
   };
 
