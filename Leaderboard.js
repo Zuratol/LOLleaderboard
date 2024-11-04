@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Trophy, Medal, Award, Trash2, RefreshCw } from 'lucide-react';
 import './leaderboard.css';
-
-const API_URL = 'https://leaderboard-backend-6fr8.onrender.com';
+import API_URL from './config';  // Import the API URL
 
 const Leaderboard = () => {
   const [leaderboard, setLeaderboard] = useState([]);
@@ -16,13 +15,24 @@ const Leaderboard = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${API_URL}/leaderboard`);
-      if (!response.ok) throw new Error('Failed to fetch leaderboard');
+      const response = await fetch(`${API_URL}/leaderboard`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Server responded with ${response.status}: ${errorText}`);
+      }
+
       const data = await response.json();
-      setLeaderboard(data);
+      setLeaderboard(Array.isArray(data) ? data : []);
     } catch (error) {
-      setError('Failed to load leaderboard data');
-      console.error('Error:', error);
+      console.error('Fetch error:', error);
+      setError(`Failed to load leaderboard data: ${error.message}`);
     } finally {
       setIsLoading(false);
     }
@@ -34,12 +44,19 @@ const Leaderboard = () => {
     try {
       const response = await fetch(`${API_URL}/leaderboard`, {
         method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
-      if (!response.ok) throw new Error('Failed to clear leaderboard');
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to clear leaderboard: ${errorText}`);
+      }
+
       setLeaderboard([]);
     } catch (error) {
-      setError('Failed to clear leaderboard');
-      console.error('Error:', error);
+      setError(`Failed to clear leaderboard: ${error.message}`);
     }
   };
 
