@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Trophy, Medal, Award, Trash2, RefreshCw } from 'lucide-react';
 import './leaderboard.css';
 
+const API_URL = process.env.REACT_APP_API_URL || 'https://leaderboard-backend-6fr8.onrender.com';
+console.log('API URL being used:', API_URL);
+
 const Leaderboard = () => {
   const [leaderboard, setLeaderboard] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -14,9 +17,13 @@ const Leaderboard = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch('http://localhost:5000/leaderboard');
+      console.log('Fetching from:', `${API_URL}/leaderboard`);
+      const response = await fetch(`${API_URL}/leaderboard`);
+      console.log('Response status:', response.status);
+      
       if (!response.ok) throw new Error('Failed to fetch leaderboard');
       const data = await response.json();
+      console.log('Received data:', data);
       setLeaderboard(data);
     } catch (error) {
       setError('Failed to load leaderboard data');
@@ -30,7 +37,8 @@ const Leaderboard = () => {
     if (!window.confirm('Are you sure you want to clear the leaderboard?')) return;
     
     try {
-      const response = await fetch('http://localhost:5000/leaderboard', {
+      console.log('Clearing leaderboard at:', `${API_URL}/leaderboard`);
+      const response = await fetch(`${API_URL}/leaderboard`, {
         method: 'DELETE',
       });
       if (!response.ok) throw new Error('Failed to clear leaderboard');
