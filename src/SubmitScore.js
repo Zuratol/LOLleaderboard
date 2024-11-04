@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Send, X } from 'lucide-react';
 import './leaderboard.css';
 
+const API_URL = 'https://leaderboard-backend-6fr8.onrender.com';
+
 const ScoreSubmissionForm = () => {
   const [playerName, setPlayerName] = useState('');
   const [category, setCategory] = useState('E');
@@ -30,7 +32,8 @@ const ScoreSubmissionForm = () => {
     setError(null);
 
     try {
-      const response = await fetch('http://localhost:5000/submit-score', {
+      console.log('Submitting to:', `${API_URL}/submit-score`);
+      const response = await fetch(`${API_URL}/submit-score`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
