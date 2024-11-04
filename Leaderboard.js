@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Trophy, Medal, Award, Trash2, RefreshCw } from 'lucide-react';
 import './leaderboard.css';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+const API_URL = process.env.REACT_APP_API_URL || 'https://leaderboard-backend-6fr8.onrender.com';
 console.log('API URL being used:', API_URL);
 
 const Leaderboard = () => {
